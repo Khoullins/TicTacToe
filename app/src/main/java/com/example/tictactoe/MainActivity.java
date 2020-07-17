@@ -1,5 +1,6 @@
 package com.example.tictactoe;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                resetGame();
             }
         });
     }
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         roundCount++; // increase round count by 1
-
+        // check who won
         if (checkForWin()){
             if (player1Turn){
                 player1Wins();
@@ -148,5 +149,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         roundCount = 0;
         player1Turn = true;
+    }
+    private void resetGame() {
+        player1Points = 0;
+        player2Points = 0;
+        updatePointsText();
+        resetBoard();
+    }
+    // saves state on device rotation
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("roundCount", roundCount);
+        outState.putInt("player1Points", player1Points);
+        outState.putInt("player2Points", player2Points);
+        outState.putBoolean("player1Turn", player1Turn);
+    }
+    // restores state on device rotation
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        roundCount = savedInstanceState.getInt("roundCount");
+        player1Points = savedInstanceState.getInt("player1Points");
+        player2Points = savedInstanceState.getInt("player2Points");
+        player1Turn = savedInstanceState.getBoolean("player1Turn");
     }
 }
