@@ -19,17 +19,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // points for each player
     private  int player1Points;
     private int player2Points;
+    private int drawPoints;
     // display player points
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
+    private TextView textViewDraws;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         textViewPlayer1 = findViewById(R.id.text_view_p1);
         textViewPlayer2 = findViewById(R.id.text_view_p2);
+        textViewDraws = findViewById(R.id.text_draw);
         // nested loop to loop throw rows & columns of the two dimensional array
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++){
@@ -115,31 +118,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return false;
     }
-
+    // show a toast popup for all player1wins and update player1points
     private void player1Wins() {
         player1Points++;
         Toast.makeText(this, "Player 1 wins!", Toast.LENGTH_SHORT).show();
         updatePointsText();
         resetBoard();
     }
-
+    // show a toast popup for all player2wins and update player2points
     private void player2Wins() {
         player2Points++;
         Toast.makeText(this, "Player 2 wins!", Toast.LENGTH_SHORT).show();
         updatePointsText();
         resetBoard();
     }
-
+    // show a popup for all draws and update drawpoints
     private void draw() {
+        drawPoints++;
         Toast.makeText(this, "Draw!", Toast.LENGTH_SHORT).show();
+        updatePointsText();
         resetBoard();
     }
-
+    // update each players points after a win
     private void updatePointsText() {
         textViewPlayer1.setText("Player 1: " + player1Points);
         textViewPlayer2.setText("Player 2: " + player2Points);
+        textViewDraws.setText("Draws: 0" + drawPoints);
     }
-
+    // reset the game board, roundcount, and set player1 to player
     private void resetBoard() {
         for (int i = 0; i < 3; i++){
             for (int j = 0; j < 3; j++){
@@ -150,9 +156,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         roundCount = 0;
         player1Turn = true;
     }
+    // reset the board, roundcount, set player1 to play and set all playerpoints to 0
     private void resetGame() {
         player1Points = 0;
         player2Points = 0;
+        drawPoints = 0;
         updatePointsText();
         resetBoard();
     }
@@ -162,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onSaveInstanceState(outState);
 
         outState.putInt("roundCount", roundCount);
+        outState.putInt("drawPoints", drawPoints);
         outState.putInt("player1Points", player1Points);
         outState.putInt("player2Points", player2Points);
         outState.putBoolean("player1Turn", player1Turn);
@@ -172,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onRestoreInstanceState(savedInstanceState);
 
         roundCount = savedInstanceState.getInt("roundCount");
+        drawPoints = savedInstanceState.getInt("drawPoints");
         player1Points = savedInstanceState.getInt("player1Points");
         player2Points = savedInstanceState.getInt("player2Points");
         player1Turn = savedInstanceState.getBoolean("player1Turn");
