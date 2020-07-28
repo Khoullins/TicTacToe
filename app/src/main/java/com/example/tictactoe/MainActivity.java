@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textViewDraws;
 
     @Override
-    protected void onCreate(@NonNull Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // nested loop to loop throw rows & columns of the two dimensional array
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++){
-                String btnID = "button_" + i + j; // button ids
+                String btnID = "btn_" + i + j; // button ids
                 int resID = getResources().getIdentifier(btnID, "id", getPackageName()); // find view by id
                 buttons[i][j] = findViewById(resID); // reference buttons
                 buttons[i][j].setOnClickListener(this); // main activity set to onclicklistener
